@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBoxSuppressMouse = new System.Windows.Forms.CheckBox();
+            //this.checkBoxSuppressMouse = new System.Windows.Forms.CheckBox();
             this.panelSeparator = new System.Windows.Forms.Panel();
             this.radioGlobal = new System.Windows.Forms.RadioButton();
             this.labelWheel = new System.Windows.Forms.Label();
@@ -36,20 +36,17 @@
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.clearLogButton = new System.Windows.Forms.Button();
-            this.checkBoxSupressMouseWheel = new System.Windows.Forms.CheckBox();
+            //this.checkBoxSupressMouseWheel = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBoxSuppressMouse
             // 
-            this.checkBoxSuppressMouse.AutoSize = true;
-            this.checkBoxSuppressMouse.Location = new System.Drawing.Point(211, 45);
-            this.checkBoxSuppressMouse.Name = "checkBoxSuppressMouse";
-            this.checkBoxSuppressMouse.Size = new System.Drawing.Size(159, 17);
-            this.checkBoxSuppressMouse.TabIndex = 13;
-            this.checkBoxSuppressMouse.Text = "Suppress Right Mouse Click";
-            this.checkBoxSuppressMouse.UseVisualStyleBackColor = true;
-            this.checkBoxSuppressMouse.CheckedChanged += new System.EventHandler(this.checkBoxSuppressMouse_CheckedChanged);
+            //this.checkBoxSuppressMouse.Location = new System.Drawing.Point(0, 0);
+            //this.checkBoxSuppressMouse.Name = "checkBoxSuppressMouse";
+            //this.checkBoxSuppressMouse.Size = new System.Drawing.Size(104, 24);
+            //this.checkBoxSuppressMouse.TabIndex = 18;
+            //this.checkBoxSuppressMouse.CheckedChanged += new System.EventHandler(this.checkBoxSuppressMouse_CheckedChanged);
             // 
             // panelSeparator
             // 
@@ -121,8 +118,8 @@
             // 
             this.groupBox2.BackColor = System.Drawing.Color.White;
             this.groupBox2.Controls.Add(this.clearLogButton);
-            this.groupBox2.Controls.Add(this.checkBoxSupressMouseWheel);
-            this.groupBox2.Controls.Add(this.checkBoxSuppressMouse);
+            //this.groupBox2.Controls.Add(this.checkBoxSupressMouseWheel);
+            //this.groupBox2.Controls.Add(this.checkBoxSuppressMouse);
             this.groupBox2.Controls.Add(this.panelSeparator);
             this.groupBox2.Controls.Add(this.radioGlobal);
             this.groupBox2.Controls.Add(this.labelWheel);
@@ -148,14 +145,10 @@
             // 
             // checkBoxSupressMouseWheel
             // 
-            this.checkBoxSupressMouseWheel.AutoSize = true;
-            this.checkBoxSupressMouseWheel.Location = new System.Drawing.Point(211, 66);
-            this.checkBoxSupressMouseWheel.Name = "checkBoxSupressMouseWheel";
-            this.checkBoxSupressMouseWheel.Size = new System.Drawing.Size(139, 17);
-            this.checkBoxSupressMouseWheel.TabIndex = 15;
-            this.checkBoxSupressMouseWheel.Text = "Suppress Mouse Wheel";
-            this.checkBoxSupressMouseWheel.UseVisualStyleBackColor = true;
-            this.checkBoxSupressMouseWheel.CheckedChanged += new System.EventHandler(this.checkBoxSupressMouseWheel_CheckedChanged);
+            //this.checkBoxSupressMouseWheel.Location = new System.Drawing.Point(193, 34);
+            //this.checkBoxSupressMouseWheel.Name = "checkBoxSupressMouseWheel";
+            //this.checkBoxSupressMouseWheel.Size = new System.Drawing.Size(104, 24);
+            //this.checkBoxSupressMouseWheel.TabIndex = 17;
             // 
             // Main
             // 
@@ -175,14 +168,14 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox checkBoxSuppressMouse;
+        //private System.Windows.Forms.CheckBox checkBoxSuppressMouse;
         private System.Windows.Forms.Panel panelSeparator;
         private System.Windows.Forms.RadioButton radioGlobal;
         private System.Windows.Forms.Label labelWheel;
         private System.Windows.Forms.Label labelMousePosition;
         private System.Windows.Forms.TextBox textBoxLog;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkBoxSupressMouseWheel;
+        //private System.Windows.Forms.CheckBox checkBoxSupressMouseWheel;
         private System.Windows.Forms.Button clearLogButton;
     }
 }
