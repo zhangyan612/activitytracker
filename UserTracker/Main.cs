@@ -51,20 +51,23 @@ namespace UserTracker
             m_Events.MouseDoubleClick += OnMouseDoubleClick;
 
             m_Events.MouseMove += HookManager_MouseMove;
+            m_Events.MouseMove += IdleManager_MouseMove;
 
             m_Events.MouseDragStarted += OnMouseDragStarted;
             m_Events.MouseDragFinished += OnMouseDragFinished;
 
+            m_Events.MouseWheel += HookManager_MouseWheel;
             //if (checkBoxSupressMouseWheel.Checked)
             //    m_Events.MouseWheelExt += HookManager_MouseWheelExt;
             //else
             //    m_Events.MouseWheel += HookManager_MouseWheel;
 
+            m_Events.MouseDown += OnMouseDown;
             //if (checkBoxSuppressMouse.Checked)
             //    m_Events.MouseDownExt += HookManager_Supress;
             //else
             //    m_Events.MouseDown += OnMouseDown;
-            
+
         }
 
         private void Unsubscribe()
@@ -79,15 +82,19 @@ namespace UserTracker
             m_Events.MouseDoubleClick -= OnMouseDoubleClick;
 
             m_Events.MouseMove -= HookManager_MouseMove;
+            m_Events.MouseMove -= IdleManager_MouseMove;
+
 
             m_Events.MouseDragStarted -= OnMouseDragStarted;
             m_Events.MouseDragFinished -= OnMouseDragFinished;
 
+            m_Events.MouseWheel -= HookManager_MouseWheel;
             //if (checkBoxSupressMouseWheel.Checked)
             //    m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
             //else
             //    m_Events.MouseWheel -= HookManager_MouseWheel;
 
+            m_Events.MouseDown -= OnMouseDown;
             //if (checkBoxSuppressMouse.Checked)
             //    m_Events.MouseDownExt -= HookManager_Supress;
             //else
@@ -127,6 +134,11 @@ namespace UserTracker
         private void HookManager_MouseMove(object sender, MouseEventArgs e)
         {
             labelMousePosition.Text = string.Format("x={0:0000}; y={1:0000}", e.X, e.Y);
+        }
+
+        private void IdleManager_MouseMove(object sender, MouseEventArgs e)
+        {
+            IdleTimer.Text = string.Format("idle time: {0:0000}; y={1:0000}", e.X, e.Y);
         }
 
         private void OnMouseDown(object sender, MouseEventArgs e)
@@ -193,37 +205,43 @@ namespace UserTracker
         //    if (((RadioButton) sender).Checked) Unsubscribe();
         //}
 
-        //private void checkBoxSupressMouseWheel_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (m_Events == null) return;
+        private void checkBoxSupressMouseWheel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_Events == null) return;
 
-        //    if (((CheckBox) sender).Checked)
-        //    {
-        //        m_Events.MouseWheel -= HookManager_MouseWheel;
-        //        m_Events.MouseWheelExt += HookManager_MouseWheelExt;
-        //    }
-        //    else
-        //    {
-        //        m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
-        //        m_Events.MouseWheel += HookManager_MouseWheel;
-        //    }
-        //}
+            m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
+            m_Events.MouseWheel += HookManager_MouseWheel;
 
-        //private void checkBoxSuppressMouse_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (m_Events == null) return;
+            //if (((CheckBox)sender).Checked)
+            //{
+            //    m_Events.MouseWheel -= HookManager_MouseWheel;
+            //    m_Events.MouseWheelExt += HookManager_MouseWheelExt;
+            //}
+            //else
+            //{
+            //    m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
+            //    m_Events.MouseWheel += HookManager_MouseWheel;
+            //}
+        }
 
-        //    if (((CheckBox)sender).Checked)
-        //    {
-        //        m_Events.MouseDown -= OnMouseDown;
-        //        m_Events.MouseDownExt += HookManager_Supress;
-        //    }
-        //    else
-        //    {
-        //        m_Events.MouseDownExt -= HookManager_Supress;
-        //        m_Events.MouseDown += OnMouseDown;
-        //    }
-        //}
+        private void checkBoxSuppressMouse_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_Events == null) return;
+
+            m_Events.MouseDownExt -= HookManager_Supress;
+            m_Events.MouseDown += OnMouseDown;
+
+            //if (((CheckBox)sender).Checked)
+            //{
+            //    m_Events.MouseDown -= OnMouseDown;
+            //    m_Events.MouseDownExt += HookManager_Supress;
+            //}
+            //else
+            //{
+            //    m_Events.MouseDownExt -= HookManager_Supress;
+            //    m_Events.MouseDown += OnMouseDown;
+            //}
+        }
 
         private void clearLog_Click(object sender, EventArgs e)
         {
@@ -247,5 +265,6 @@ namespace UserTracker
         {
 
         }
+
     }
 }
