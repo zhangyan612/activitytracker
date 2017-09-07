@@ -30,6 +30,7 @@
         {
             this.panelSeparator = new System.Windows.Forms.Panel();
             this.radioGlobal = new System.Windows.Forms.RadioButton();
+            this.radioNone = new System.Windows.Forms.RadioButton();
             this.labelWheel = new System.Windows.Forms.Label();
             this.labelMousePosition = new System.Windows.Forms.Label();
             this.textBoxLog = new System.Windows.Forms.TextBox();
@@ -59,12 +60,25 @@
             this.radioGlobal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioGlobal.Location = new System.Drawing.Point(12, 11);
             this.radioGlobal.Name = "radioGlobal";
-            this.radioGlobal.Size = new System.Drawing.Size(87, 17);
+            this.radioGlobal.Size = new System.Drawing.Size(92, 17);
             this.radioGlobal.TabIndex = 10;
             this.radioGlobal.TabStop = true;
-            this.radioGlobal.Text = "Global hooks";
+            this.radioGlobal.Text = "Start Tracking";
             this.radioGlobal.UseVisualStyleBackColor = false;
             this.radioGlobal.CheckedChanged += new System.EventHandler(this.radioGlobal_CheckedChanged);
+            // 
+            // radioNone
+            // 
+            this.radioNone.AutoSize = true;
+            this.radioNone.BackColor = System.Drawing.Color.White;
+            this.radioNone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioNone.Location = new System.Drawing.Point(220, 13);
+            this.radioNone.Name = "radioNone";
+            this.radioNone.Size = new System.Drawing.Size(92, 17);
+            this.radioNone.TabIndex = 14;
+            this.radioNone.Text = "Stop Tracking";
+            this.radioNone.UseVisualStyleBackColor = false;
+            this.radioNone.CheckedChanged += new System.EventHandler(this.radioNone_CheckedChanged);
             // 
             // labelWheel
             // 
@@ -112,6 +126,7 @@
             this.groupBox2.Controls.Add(this.clearLogButton);
             this.groupBox2.Controls.Add(this.panelSeparator);
             this.groupBox2.Controls.Add(this.radioGlobal);
+            this.groupBox2.Controls.Add(this.radioNone);
             this.groupBox2.Controls.Add(this.labelWheel);
             this.groupBox2.Controls.Add(this.labelMousePosition);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -163,6 +178,7 @@
         //private System.Windows.Forms.CheckBox checkBoxSuppressMouse;
         private System.Windows.Forms.Panel panelSeparator;
         private System.Windows.Forms.RadioButton radioGlobal;
+        private System.Windows.Forms.RadioButton radioNone;
         private System.Windows.Forms.Label labelWheel;
         private System.Windows.Forms.Label labelMousePosition;
         private System.Windows.Forms.TextBox textBoxLog;

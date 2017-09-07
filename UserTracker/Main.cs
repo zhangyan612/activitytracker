@@ -7,12 +7,15 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
 using Gma.System.MouseKeyHook.Implementation;
+using System.Timers;
 
 namespace UserTracker
 {
     public partial class Main : Form
     {
         private IKeyboardMouseEvents m_Events;
+        private System.Timers.Timer idleTimer = new System.Timers.Timer();
+        private System.Timers.Timer activeTimer = new System.Timers.Timer();
 
         public Main()
         {
@@ -20,6 +23,56 @@ namespace UserTracker
             radioGlobal.Checked = true;
             SubscribeGlobal();
             FormClosing += Main_Closing;
+            InitTimer();
+        }
+
+        private void InitTimer()
+        {
+            idleTimer.Elapsed += new ElapsedEventHandler(OnIdleEvent);
+            idleTimer.Interval = 1000 * 5;
+            idleTimer.Start();
+
+            activeTimer.Elapsed += new ElapsedEventHandler(OnActiveEvent);
+            activeTimer.Interval = 1000 * 20;
+            activeTimer.Start();
+        }
+
+        private void ResetIdleTimer()
+        {
+            idleTimer.Stop();
+            idleTimer.Start();
+        }
+
+        private void ResetActiveTimer()
+        {
+            activeTimer.Stop();
+            activeTimer.Start();
+        }
+        private void StopAllTimer()
+        {
+            Console.WriteLine("Stop all timers");
+            idleTimer.Stop();
+            activeTimer.Stop();
+        }
+
+
+        private void OnIdleEvent(object sender, ElapsedEventArgs e)
+        {
+            ResetActiveTimer();
+            Console.WriteLine("Idle event activated, signal time \t{0} ", e.SignalTime);
+            //IdleTimer.Text = string.Format("Come back to work!");
+            //Log(string.Format("Come back to work"));
+            //SendMsg("Come back to work");
+            LocalSound.playBackWork();
+        }
+
+        private void OnActiveEvent(object sender, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Active event activated, signal time \t{0} ", e.SignalTime);
+            //IdleTimer.Text = string.Format("You need to take a break!");
+            //Log(string.Format("You need to take a break"));
+            //SendMsg("You need to take a break!");
+            LocalSound.playTakeBreak();
         }
 
         private void Main_Closing(object sender, CancelEventArgs e)
@@ -37,6 +90,8 @@ namespace UserTracker
         {
             Unsubscribe();
             Subscribe(Hook.GlobalEvents());
+            ResetIdleTimer();
+            ResetActiveTimer();
         }
 
         private void Subscribe(IKeyboardMouseEvents events)
@@ -51,7 +106,6 @@ namespace UserTracker
             m_Events.MouseDoubleClick += OnMouseDoubleClick;
 
             m_Events.MouseMove += HookManager_MouseMove;
-            m_Events.MouseMove += IdleManager_MouseMove;
 
             m_Events.MouseDragStarted += OnMouseDragStarted;
             m_Events.MouseDragFinished += OnMouseDragFinished;
@@ -67,7 +121,6 @@ namespace UserTracker
             //    m_Events.MouseDownExt += HookManager_Supress;
             //else
             //    m_Events.MouseDown += OnMouseDown;
-
         }
 
         private void Unsubscribe()
@@ -82,8 +135,6 @@ namespace UserTracker
             m_Events.MouseDoubleClick -= OnMouseDoubleClick;
 
             m_Events.MouseMove -= HookManager_MouseMove;
-            m_Events.MouseMove -= IdleManager_MouseMove;
-
 
             m_Events.MouseDragStarted -= OnMouseDragStarted;
             m_Events.MouseDragFinished -= OnMouseDragFinished;
@@ -102,7 +153,16 @@ namespace UserTracker
 
             m_Events.Dispose();
             m_Events = null;
+            StopAllTimer();
         }
+
+        //private void SendMsg(string message)
+        //{
+        //    //IdleTimer.Text = string.Format("Come back to work!");
+        //    //Log(string.Format("Come back to work"));
+        //    //textBoxLog.AppendText("Come back to work");
+        //    //textBoxLog.ScrollToCaret();
+        //}
 
         private void HookManager_Supress(object sender, MouseEventExtArgs e)
         {
@@ -118,6 +178,7 @@ namespace UserTracker
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            IdleManager();
             Log(string.Format("KeyDown  \t\t {0}\n", e.KeyCode));
         }
 
@@ -128,17 +189,20 @@ namespace UserTracker
 
         private void HookManager_KeyPress(object sender, KeyPressEventArgs e)
         {
+            IdleManager();
             Log(string.Format("KeyPress \t\t {0}\n", e.KeyChar));
         }
 
         private void HookManager_MouseMove(object sender, MouseEventArgs e)
         {
+            IdleManager();
             labelMousePosition.Text = string.Format("x={0:0000}; y={1:0000}", e.X, e.Y);
         }
 
-        private void IdleManager_MouseMove(object sender, MouseEventArgs e)
+        private void IdleManager()
         {
-            IdleTimer.Text = string.Format("idle time: {0:0000}; y={1:0000}", e.X, e.Y);
+            ResetIdleTimer();
+            IdleTimer.Text = string.Format("User is Working");
         }
 
         private void OnMouseDown(object sender, MouseEventArgs e)
@@ -148,21 +212,25 @@ namespace UserTracker
 
         private void OnMouseUp(object sender, MouseEventArgs e)
         {
+            IdleManager();
             Log(string.Format("MouseUp \t\t {0}\n", e.Button));
         }
 
         private void OnMouseClick(object sender, MouseEventArgs e)
         {
+            IdleManager();
             Log(string.Format("MouseClick \t\t {0}\n", e.Button));
         }
 
         private void OnMouseDoubleClick(object sender, MouseEventArgs e)
         {
+            IdleManager();
             Log(string.Format("MouseDoubleClick \t\t {0}\n", e.Button));
         }
 
         private void OnMouseDragStarted(object sender, MouseEventArgs e)
         {
+            IdleManager();
             Log("MouseDragStarted\n");
         }
 
@@ -173,6 +241,7 @@ namespace UserTracker
 
         private void HookManager_MouseWheel(object sender, MouseEventArgs e)
         {
+            IdleManager();
             labelWheel.Text = string.Format("Wheel={0:000}", e.Delta);
         }
         
@@ -200,48 +269,48 @@ namespace UserTracker
             if (((RadioButton) sender).Checked) SubscribeGlobal();
         }
 
-        //private void radioNone_CheckedChanged(object sender, EventArgs e)
+        private void radioNone_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked) Unsubscribe();
+        }
+
+        //private void checkBoxSupressMouseWheel_CheckedChanged(object sender, EventArgs e)
         //{
-        //    if (((RadioButton) sender).Checked) Unsubscribe();
+        //    if (m_Events == null) return;
+
+        //    m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
+        //    m_Events.MouseWheel += HookManager_MouseWheel;
+
+        //    //if (((CheckBox)sender).Checked)
+        //    //{
+        //    //    m_Events.MouseWheel -= HookManager_MouseWheel;
+        //    //    m_Events.MouseWheelExt += HookManager_MouseWheelExt;
+        //    //}
+        //    //else
+        //    //{
+        //    //    m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
+        //    //    m_Events.MouseWheel += HookManager_MouseWheel;
+        //    //}
         //}
 
-        private void checkBoxSupressMouseWheel_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_Events == null) return;
+        //private void checkBoxSuppressMouse_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (m_Events == null) return;
 
-            m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
-            m_Events.MouseWheel += HookManager_MouseWheel;
+        //    m_Events.MouseDownExt -= HookManager_Supress;
+        //    m_Events.MouseDown += OnMouseDown;
 
-            //if (((CheckBox)sender).Checked)
-            //{
-            //    m_Events.MouseWheel -= HookManager_MouseWheel;
-            //    m_Events.MouseWheelExt += HookManager_MouseWheelExt;
-            //}
-            //else
-            //{
-            //    m_Events.MouseWheelExt -= HookManager_MouseWheelExt;
-            //    m_Events.MouseWheel += HookManager_MouseWheel;
-            //}
-        }
-
-        private void checkBoxSuppressMouse_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_Events == null) return;
-
-            m_Events.MouseDownExt -= HookManager_Supress;
-            m_Events.MouseDown += OnMouseDown;
-
-            //if (((CheckBox)sender).Checked)
-            //{
-            //    m_Events.MouseDown -= OnMouseDown;
-            //    m_Events.MouseDownExt += HookManager_Supress;
-            //}
-            //else
-            //{
-            //    m_Events.MouseDownExt -= HookManager_Supress;
-            //    m_Events.MouseDown += OnMouseDown;
-            //}
-        }
+        //    //if (((CheckBox)sender).Checked)
+        //    //{
+        //    //    m_Events.MouseDown -= OnMouseDown;
+        //    //    m_Events.MouseDownExt += HookManager_Supress;
+        //    //}
+        //    //else
+        //    //{
+        //    //    m_Events.MouseDownExt -= HookManager_Supress;
+        //    //    m_Events.MouseDown += OnMouseDown;
+        //    //}
+        //}
 
         private void clearLog_Click(object sender, EventArgs e)
         {
