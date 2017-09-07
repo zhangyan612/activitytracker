@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.panelSeparator = new System.Windows.Forms.Panel();
             this.radioGlobal = new System.Windows.Forms.RadioButton();
             this.radioNone = new System.Windows.Forms.RadioButton();
@@ -37,6 +39,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.IdleTimer = new System.Windows.Forms.Label();
             this.clearLogButton = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,6 +160,13 @@
             this.clearLogButton.UseVisualStyleBackColor = true;
             this.clearLogButton.Click += new System.EventHandler(this.clearLog_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Activity Tracker";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -166,6 +176,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "Main";
             this.Text = "Activity Tracker";
+            this.Resize += new System.EventHandler(this.TrayMinimizerForm_Resize);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -186,6 +197,7 @@
         //private System.Windows.Forms.CheckBox checkBoxSupressMouseWheel;
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.Label IdleTimer;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
