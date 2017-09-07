@@ -29,11 +29,11 @@ namespace UserTracker
         private void InitTimer()
         {
             idleTimer.Elapsed += new ElapsedEventHandler(OnIdleEvent);
-            idleTimer.Interval = 1000 * 5;
+            idleTimer.Interval = 1000 * 60 * 30;  //1000 is 1 second
             idleTimer.Start();
 
             activeTimer.Elapsed += new ElapsedEventHandler(OnActiveEvent);
-            activeTimer.Interval = 1000 * 20;
+            activeTimer.Interval = 1000 * 60 * 60; // 1hour
             activeTimer.Start();
         }
 
